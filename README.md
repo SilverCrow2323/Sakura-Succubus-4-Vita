@@ -27,3 +27,6 @@ Here's the quickest way to set the game on your Vita:
 7. Last step: copy the `game` folder from the original PC game to `ux0:/app/RNPYSS004/`
 
 Created using [Ren'Py PSVita Distribution Tool](https://github.com/SonicMastr/renpy-vita/releases/tag/v1.0)
+
+## Known Bugs
+- **Settings and Load/Save Menu**: sometimes may be glitchy. The Quick Load/Save option works without issues.
