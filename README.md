@@ -30,3 +30,7 @@ Created using [Ren'Py PSVita Distribution Tool](https://github.com/SonicMastr/re
 
 ## Known Bugs
 - **Settings and Load/Save Menu**: sometimes may be glitchy. The Quick Load/Save option works without issues. Seems that may be a common issue on the latest games from Winged Cloud.
+
+## 📚 Practical Wiki
+
+The [GitHub Wiki](https://github.com/SilverCrow2323/Sakura-Succubus-4-Vita/wiki) covers sources, release-specific installation notes and troubleshooting. The tracked source is in [wiki-source/](wiki-source/); publish with `sh tools/publish_wiki.sh`.
