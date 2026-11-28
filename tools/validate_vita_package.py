@@ -10,8 +10,8 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-PNG_SIGNATURE = b"\\x89PNG\\r\\n\\x1a\\n"
-PSF_SIGNATURE = b"\\x00PSF"
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+PSF_SIGNATURE = b"\x00PSF"
 EXPECTED_TITLE_ID = "RNPYSS004"
 
 
@@ -62,7 +62,7 @@ def _single_filename(value: str, label: str) -> str:
         not name
         or name in {".", ".."}
         or "/" in name
-        or "\\\\" in name
+        or "\\" in name
         or any(ord(char) < 32 or ord(char) == 127 for char in name)
     ):
         raise PackageValidationError(f"{label} must be a plain filename")
@@ -98,7 +98,7 @@ def _read_title_id(path: Path) -> str:
         key_start = key_offset + key_relative
         if key_start < key_offset or key_start >= data_offset:
             raise PackageValidationError("PSF key offset is outside the key table")
-        key_end = data.find(b"\\x00", key_start, data_offset)
+        key_end = data.find(b"\x00", key_start, data_offset)
         if key_end < 0:
             raise PackageValidationError("PSF key is not NUL-terminated")
         try:
@@ -118,7 +118,7 @@ def _read_title_id(path: Path) -> str:
         if key == "TITLE_ID":
             if data_format != 0x0204:
                 raise PackageValidationError("PSF TITLE_ID must be a string")
-            raw = data[value_start:value_end].split(b"\\x00", 1)[0]
+            raw = data[value_start:value_end].split(b"\x00", 1)[0]
             try:
                 title_id = raw.decode("ascii")
             except UnicodeDecodeError as exc:
