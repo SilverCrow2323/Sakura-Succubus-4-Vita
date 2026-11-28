@@ -31,3 +31,11 @@ Static package-integrity validation and a repository-specific project boundary a
 
 ## Release gate and risks
 No stable release is declared until the exact app identity, runtime revision and device results are recorded. The main risks are upstream game changes, Ren'Py Vita compatibility, missing original-game files, uncertain third-party asset licenses and hardware-only runtime defects.
+
+## Evening package-validation refinement — 2026-11-28
+
+The read-only package validator now requires the PNG IHDR chunk length to be exactly 13 bytes. A regression test mutates the declared chunk length and confirms that the validator rejects the malformed image before package acceptance.
+
+Acceptance remains split:
+- The package-integrity workflow must pass on this branch.
+- A real PS Vita install, LiveArea visual inspection, save/load and suspend/resume remain separate hardware release gates.
