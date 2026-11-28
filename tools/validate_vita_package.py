@@ -44,7 +44,12 @@ def _png_dimensions(path: Path) -> tuple[int, int]:
         header = path.read_bytes()[:24]
     except OSError as exc:
         raise PackageValidationError(f"cannot read {path}: {exc}") from exc
-    if len(header) != 24 or header[:8] != PNG_SIGNATURE or header[12:16] != b"IHDR":
+    if (
+        len(header) != 24
+        or header[:8] != PNG_SIGNATURE
+        or struct.unpack(">I", header[8:12])[0] != 13
+        or header[12:16] != b"IHDR"
+    ):
         raise PackageValidationError(f"invalid PNG header: {path}")
     width, height = struct.unpack(">II", header[16:24])
     if width == 0 or height == 0:
