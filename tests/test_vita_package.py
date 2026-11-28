@@ -13,20 +13,20 @@ SPEC.loader.exec_module(validator)
 
 def png(width=1, height=1):
     return (
-        b"\\x89PNG\\r\\n\\x1a\\n"
+        b"\x89PNG\r\n\x1a\n"
         + struct.pack(">I", 13)
         + b"IHDR"
         + struct.pack(">II", width, height)
-        + b"\\x08\\x06\\x00\\x00\\x00"
+        + b"\x08\x06\x00\x00\x00"
     )
 
 
 def psf(title_id):
-    key_table = b"TITLE_ID\\x00"
-    value = title_id.encode("ascii") + b"\\x00"
+    key_table = b"TITLE_ID\x00"
+    value = title_id.encode("ascii") + b"\x00"
     key_offset = 20 + 16
     data_offset = key_offset + len(key_table)
-    header = b"\\x00PSF" + struct.pack("<IIII", 0x00000101, key_offset, data_offset, 1)
+    header = b"\x00PSF" + struct.pack("<IIII", 0x00000101, key_offset, data_offset, 1)
     entry = struct.pack("<HHIII", 0, 0x0204, len(value), len(value), 0)
     return header + entry + key_table + value
 
@@ -102,7 +102,7 @@ def test_validator_rejects_symlinked_param_sfo(tmp_path):
 
 def test_validator_rejects_truncated_psf_tables(tmp_path):
     make_package(tmp_path)
-    (tmp_path / "sce_sys" / "param.sfo").write_bytes(b"\\x00PSF" + b"\\x00" * 16)
+    (tmp_path / "sce_sys" / "param.sfo").write_bytes(b"\x00PSF" + b"\x00" * 16)
 
     with pytest.raises(validator.PackageValidationError, match="offsets or entry count"):
         validator.validate_package(tmp_path)
