@@ -63,6 +63,17 @@ def test_livearea_template_cannot_reference_files_outside_contents(tmp_path):
         validator.validate_package(tmp_path)
 
 
+def test_validator_rejects_nonstandard_ihdr_chunk_length(tmp_path):
+    make_package(tmp_path)
+    icon = tmp_path / "sce_sys" / "icon0.png"
+    data = bytearray(icon.read_bytes())
+    data[8:12] = struct.pack(">I", 12)
+    icon.write_bytes(data)
+
+    with pytest.raises(validator.PackageValidationError, match="invalid PNG header"):
+        validator.validate_package(tmp_path)
+
+
 def test_validator_rejects_non_psf_param_sfo(tmp_path):
     make_package(tmp_path)
     (tmp_path / "sce_sys" / "param.sfo").write_bytes(b"NOPE")
