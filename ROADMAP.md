@@ -34,8 +34,6 @@ No stable release is declared until the exact app identity, runtime revision and
 
 ## Evening package-validation refinement — 2026-11-28
 
-The read-only package validator now requires the PNG IHDR chunk length to be exactly 13 bytes. A regression test mutates the declared chunk length and confirms that the validator rejects the malformed image before package acceptance.
-
-Acceptance remains split:
-- The package-integrity workflow must pass on this branch.
-- A real PS Vita install, LiveArea visual inspection, save/load and suspend/resume remain separate hardware release gates.
+- The package validator requires the PNG IHDR chunk length to be exactly 13 bytes; a regression test mutates the declared length and verifies rejection.
+- Package-integrity workflow [#46181434786](https://github.com/SilverCrow2323/Sakura-Succubus-4-Vita/actions/runs/46181434786) passed on the updated branch.
+- CI validates package structure only. Physical Vita install, LiveArea visual inspection, save/load and suspend/resume remain separate release gates.
